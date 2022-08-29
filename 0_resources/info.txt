@@ -1,0 +1,1 @@
+Place here genome fasta and gtf files for genome generation.
