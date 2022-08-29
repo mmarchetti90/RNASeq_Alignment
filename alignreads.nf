@@ -40,7 +40,6 @@ process GenerateStarIndex() {
 
 	input:
 	path resources
-	path index_dir
 
 	output:
 	path "${params.genome_index_dir}"
@@ -54,14 +53,24 @@ process GenerateStarIndex() {
 			match_cell_ranger=""
 	fi
 
-	if [ ! "$(ls -A !{index_dir})" ];
+	if [ ! -f "!{params.genome_index_dir})" ];
+		then
+			create_index=true
+		elif [ ! "$(ls -A !{params.genome_index_dir})" ];
+		then
+			create_index=true
+		else
+			create_index=false
+	fi
+
+	if [ "$create_index" = true ];
 	then
 		STAR \
 		--runThreadN !{params.cpus} \
 		--runMode genomeGenerate \
 		–-limitBAMsortRAM !{params.ram} \
 		--limitGenomeGenerateRAM !{params.ram} \
-		--genomeDir !{index_dir} \
+		--genomeDir !{params.genome_index_dir} \
 		--genomeFastaFiles !{resources}/*.fa* \
 		--sjdbGTFfile !{resources}/*.gtf \
 		--sjdbOverhang $((!{params.read_length} - 1)) \
@@ -280,7 +289,7 @@ workflow {
 	}
 	
 	// Generate STAR index if absent
-	GenerateStarIndex("${projectDir}/${params.resources_dir}", "${projectDir}/${params.genome_index_dir}")
+	GenerateStarIndex("${projectDir}/${params.resources_dir}")
 
 	// STAR alignment
 	if (params.type == "bulk") {
