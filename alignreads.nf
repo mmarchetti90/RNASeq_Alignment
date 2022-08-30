@@ -34,25 +34,26 @@ process CheckReadsQuality() {
 process CheckGenomeIndex() {
 
     input:
-    path base_dir
-    path index_dir
-    
+    val index_dir
+    val index_file
+
     output:
     env create_index
 
-    shell:
-    '''
-    if [ ! -f "$(!{base_dir}/!{params.genome_index_dir})" ];
-    then
+    script:
+    if ( index_dir == 'empty' )
+        """
         create_index=true
-    elif [ ! "$(ls -A !{index_dir})" ];
-    then
+        """
+    else if ( index_file == 'empty')
+        """
         create_index=true
+        """
     else
+        """
         create_index=false
-    fi
-    '''
-    
+        """
+	
 }
 
 // Generates STAR index, if absent
@@ -307,6 +308,8 @@ workflow {
     }
 	
     // Generate STAR index if absent
+    index_dir_ch = Channel.fromPath("${projectDir}/${params.genome_index_dir}").ifEmpty("empty")
+    index_files_ch = Channel.fromPath("${projectDir}/${params.genome_index_dir}/*").ifEmpty("empty")
     CheckGenomeIndex("${projectDir}", "${projectDir}/${params.genome_index_dir}")
     GenerateStarIndex("${projectDir}/${params.resources_dir}", CheckGenomeIndex.out)
 	
