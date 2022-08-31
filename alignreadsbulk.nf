@@ -76,20 +76,20 @@ process AlignReadsBulkSingle() {
 	path "Aligned.sortedByCoord.out.bam"
 	path "Unmapped.out.mate1"
 	path "ReadsPerGene.out.tab"
-    path "Log.final.out"
-    path "Log.out"
-    path "Log.progress.out"
-    path "SJ.out.tab"
+	path "Log.final.out"
+	path "Log.out"
+	path "Log.progress.out"
+	path "SJ.out.tab"
 
-    script:
-    println "Processing sample ${read.simpleName}"
+	script:
+	println "Processing sample ${read.simpleName}"
 	"""
 	if [[ "\$(echo ${read.getExtension()})" == "gz" ]];
-    then
-        gzipped="--readFilesCommand zcat"
-    else
-        gzipped=""
-    fi
+	then
+		gzipped="--readFilesCommand zcat"
+	else
+		gzipped=""
+	fi
 
 	STAR \
 	--runThreadN ${params.cpus} \
@@ -122,20 +122,20 @@ process AlignReadsBulkPaired() {
 	path "Unmapped.out.mate1"
 	path "Unmapped.out.mate2"
 	path "ReadsPerGene.out.tab"
-    path "Log.final.out"
-    path "Log.out"
-    path "Log.progress.out"
-    path "SJ.out.tab"
+	path "Log.final.out"
+	path "Log.out"
+	path "Log.progress.out"
+	path "SJ.out.tab"
 
-    script:
-    println "Processing sample ${read1.simpleName} and ${read2.simpleName}"
+	script:
+	println "Processing sample ${read1.simpleName} and ${read2.simpleName}"
 	"""
 	if [[ "\$(echo ${read1.getExtension()})" == "gz" ]];
-    then
-        gzipped="--readFilesCommand zcat"
-    else
-        gzipped=""
-    fi
+	then
+		gzipped="--readFilesCommand zcat"
+	else
+		gzipped=""
+	fi
 
 	STAR \
 	--runThreadN ${params.cpus} \
