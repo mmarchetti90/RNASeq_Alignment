@@ -3,7 +3,7 @@ Nextflow pipeline for bulk RNASeq reads alignement.
 
 Simple Nextflow pipeline for FastQC and alignemnt of RNASeq raw reads.
 
-Analysis is based on a Docker image, automatically built if not present.
+Analysis is based on a Docker image, which can be build with the shell script in the 0_dockerfiles directory.
 
 Edit nextflow.config file for declaring experiment type.
 
