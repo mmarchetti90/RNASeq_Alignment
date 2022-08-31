@@ -1,4 +1,4 @@
-# RNASeq_Alignment
+# Bulk RNASeq Alignment
 Nextflow pipeline for bulk RNASeq reads alignement.
 
 Simple Nextflow pipeline for FastQC and alignemnt of RNASeq raw reads.
